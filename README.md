@@ -28,18 +28,19 @@ The Maybe monad. It has two constructors, `monads:just` and `monads:nothing`:
 (monads:print ((monads:bind (monads:just 1)) (lambda (val) (monads:just (add1 val))))) ; => (:just 2)
 ; this gets increasingly tedious the more transformations are applied.
 ; A doM macro exists to mitigate this, it works with any monad.
+; It does not have an implicit return (yet)
 (monads:print
-  (doM 
+  (monads:doM 
     (first-value (monads:just 1))
     (second-value (monads:just 2))
-    (+ first-value second-value))) ; => (:just 3)
+    (monads:just (+ first-value second-value)))) ; => (:just 3)
 ; of course, nothing will compose, but hijack the computation
 (monads:print
-  (doM
+  (monads:doM
     (first-value (monads:just 1))
     (boom (monads:nothing))
     (second-value (monads:just 2))
-    (+ first-value second-value))) ; => (:nothing nil)
+    (monads:just (+ first-value second-value)))) ; => (:nothing nil)
 ```
 
 ### Either
@@ -54,7 +55,7 @@ the only difference is that the error case (Left) contains a error message/objec
 ; To do something with the Either monad, use the monads:either macro like so:
 (monads:either (monads:left "that sucks, mate") ; first the monad
   (val => (add1 val)) ; then what should happen in the right case
-  (err => (error "Error: " err))) ; lastly what should happen in the left case
+  (err => (error err "in monad"))) ; lastly what should happen in the left case
 ```
 
 That's all, folks!
