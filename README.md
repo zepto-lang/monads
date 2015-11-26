@@ -54,7 +54,7 @@ the only difference is that the error case (Left) contains a error message/objec
 (monads:print (monads:left "the bomb exploded :(")) ; (:left the bomb exploded :()
 ; To do something with the Either monad, use the monads:either macro like so:
 (monads:either (monads:left "that sucks, mate") ; first the monad
-  (val => (add1 val)) ; then what should happen in the right case
+  (val => (monads:right (add1 val))) ; then what should happen in the right case
   (err => (error err "in monad"))) ; lastly what should happen in the left case
 ```
 
