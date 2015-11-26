@@ -1,0 +1,26 @@
+(load "monads/monads.zp")
+
+(define (monads:left err) "build a left instance of the either monad"
+  (monads:generic err :left (lambda (val) (monads:left err)) (lambda (f) (f err))))
+
+(define (monads:right val) "build a right instance of the either monad"
+  (monads:generic val :right (lambda (val) (monads:right val)) (lambda (f) (f val))))
+
+(define (monads:left? monad) "is monad instance left?"
+  (eq? (monads:get-type monad) :left))
+
+(define (monads:right? monad) "is monad instance right?"
+  (eq? (monads:get-type monad) :right))
+
+(define-syntax monads:either
+  (syntax-rules (=>)
+    ((monads:either monad (x => r) (y => l))
+      (if (monads:right? monad)
+        (let ((x (monads:get-val! monad)))
+          (monads:right r))
+        (let ((y (monads:get-val! monad)))
+          (monads:left l))))
+    ((monads:either x)
+      (error "Syntax error in call to monads:either, called with:" 'x ";\ncorrect form is (monad (var => on-right) (err-var => on-left))"))
+    ((monads:either x ...)
+      (error "Syntax error in call to monads:either, called with:" 'x ";\ncorrect form is (monad (var => on-right) (err-var => on-left))"))))

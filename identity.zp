@@ -1,0 +1,4 @@
+(load "monads/monads.zp")
+
+(define (monads:identity value) "build an instance of the identity monad"
+  (monads:generic value :identity (lambda (value) (monads:identity value)) (lambda (f) (f value))))

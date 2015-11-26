@@ -1,0 +1,10 @@
+(load "monads/monads.zp")
+
+(define (monads:just value) "build a just instance of the maybe monad"
+  (monads:generic value :just (lambda (val) (monads:just val)) (lambda (f) (f value))))
+
+(define (monads:nothing) "build a nothing instance of the maybe monad"
+  (monads:generic (nil) :nothing (lambda (val) (monads:nothing)) (lambda (f) (monads:nothing))))
+
+(define (monads:just? monad) "check whether monad instance is just"
+  (eq? (monads:get-type monad) :just))

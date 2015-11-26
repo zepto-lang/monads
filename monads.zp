@@ -1,0 +1,20 @@
+(load "srfi/srfi-9.zp")
+
+
+; A dumb generic monads record type. Utterly useless in itself.
+(define-record-type monad
+    (monads:generic val name return bind)
+    monads:monad?
+    (val monads:get-val! monads:set-val!)
+    (name monads:get-type tree:set-type!)
+    (return monads:return monads:set-return!)
+    (bind monads:bind monads:set-bind!))
+
+(define (monads:print monad)
+  (write (list (monads:get-type monad) (monads:get-val! monad))))
+
+(define-syntax monads:doM
+  (syntax-rules ()
+    ((monads:doM a) (error "doM takes at least two forms"))
+    ((monads:doM (var a) b) ((monads:bind a) (lambda (var) b)))
+    ((monads:doM (var a) b ...) ((monads:bind a) (lambda (var) (monads:doM b ...))))))
