@@ -12,6 +12,18 @@
 (define (monads:right? monad) "is monad instance right?"
   (eq? (monads:get-type monad) :right))
 
+(define (monads:partition-eithers monads)
+  "returns a list of two lists, the first being the left values, the second being the right ones"
+  (list (monads:lefts monads) (monads:rights monads)))
+
+(define (monads:lefts monads)
+  "returns all the left elements in the list"
+  (filter monads:left? monads))
+
+(define (monads:rights monads)
+  "returns all the right elements in the list"
+  (filter monads:right? monads))
+
 (define-syntax monads:either
   (syntax-rules (=>)
     ((monads:either monad (x => r) (y => l))

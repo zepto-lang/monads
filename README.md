@@ -4,7 +4,7 @@ A minimal monad library in and for zepto.
 
 ## Usage
 
-The following monads are implemented:
+The following monads are implemented (with basically the same functions as in their Haskell equivalent):
 
 ### Identity
 

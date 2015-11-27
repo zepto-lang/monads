@@ -8,3 +8,22 @@
 
 (define (monads:just? monad) "check whether monad instance is just"
   (eq? (monads:get-type monad) :just))
+
+(define (monads:nothing? monad) "check whether monad instance is nothing"
+  (eq? (monads:get-type monad) :nothing))
+
+(define (monads:from-maybe monad default) "returns value of just or default value"
+  (if (monads:just? monad) (monads:get-val! monad) default))
+
+(define (monads:list-to-maybe l) "returns nothing on empty list or just with head of list"
+  (if (null? l) (monads:nothing) (monads:just (head l))))
+
+(define (monads:maybe-to-list monad) "returns empty list on nothing or a singleton list with element of maybe"
+  (if (monads:just? monad) (list (monads:get-val! monad)) []))
+
+(define (monads:cat-maybe monads) "returns list of all just values from list of monads"
+  (map monads:get-val! (filter monads:just? monads)))
+
+(define (monads:map-maybe f l)
+  "applies function to list and returns all instances where the function returned a just value"
+  (monads:cat-maybe (map f l)))
