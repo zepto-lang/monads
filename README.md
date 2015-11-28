@@ -73,7 +73,7 @@ construct. The default value (if none is supplied in the constructor) is 1.
     (x (monads:serial "first value"))
     (y (monads:serial "second value"))
     (z (monads:serial "third value"))
-    (monads:serial "last")))
+    (monads:serial "last"))) ; this serial monad will have the number 4
 ```
 
 I am not sure the implementation is sensible that way. It is somewhat convenient, though.
