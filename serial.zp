@@ -1,0 +1,32 @@
+(load "monads/monads")
+
+(define-record-type serial
+  (monads:_serial val id)
+  monads:_serial?
+  (val monads:_get-serial-val monads:_set-serial-val!)
+  (id monads:_get-serial-id monads:_set-serial-id!))
+
+(define (monads:serial val . id)
+  (define (construct val id)
+    (monads:generic
+      (monads:_serial val id)
+      :serial
+      (lambda (x)
+        (let ((serial (monads:get-val! x)))
+          (list (monads:_get-serial-val serial) (monads:_get-serial-id id))))
+      (lambda (f)
+        (let ((applied (f (monads:_serial val id))))
+        (monads:serial (monads:serial-val applied) (add1 (monads:serial-id applied)))))))
+  (cond
+    ((list? val) (construct (car val) (cadr val)))
+    ((null? id) (construct val 1))
+    (else (construct val (car id)))))
+
+(define (monads:serial? monad) "is argument serial monad?"
+  (eq? (monads:get-type monad) :serial))
+
+(define (monads:serial-id monad) "get id from serial monad"
+  (monads:_get-serial-id (monads:get-val! monad)))
+
+(define (monads:serial-val monad) "get value from serial monad"
+  (monads:_get-serial-val (monads:get-val! monad)))

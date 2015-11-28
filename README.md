@@ -60,6 +60,24 @@ the only difference is that the error case (Left) contains a error message/objec
 
 That's all, folks!
 
+### Serial
+
+The Serial monad. It assigns a serial number to all monad instances that are
+consecutively created in calls to `monads:bind` and, by extension, in a `monads:doM`
+construct. The default value (if none is supplied in the constructor) is 1.
+
+```clojure
+(load "monads/serial")
+(monads:print
+  (monads:doM
+    (x (monads:serial "first value"))
+    (y (monads:serial "second value"))
+    (z (monads:serial "third value"))
+    (monads:serial "last")))
+```
+
+I am not sure the implementation is sensible that way. It is somewhat convenient, though.
+
 ## Hacking your own monads
 
 There is a special monads datatype defined in "monads/monads", it is constructed like so:
