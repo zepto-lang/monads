@@ -1,6 +1,3 @@
-(load "srfi/srfi-9.zp")
-
-
 ; A dumb generic monads record type. Utterly useless in itself.
 (define-record-type monad
     (monads:generic val name return bind)
