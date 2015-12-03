@@ -78,6 +78,19 @@ construct. The default value (if none is supplied in the constructor) is 1.
 
 I am not sure the implementation is sensible that way. It is somewhat convenient, though.
 
+### List
+
+The List monad. It takes in a list as value. Bind functions are performed
+element-wise. Usage could look like this:
+
+```clojure
+(load "monads/list")
+(write
+  (monads:doM
+    (el (monads:list [1 2 3 4]))
+    (* el 2))) ; => (2 4 6 8)
+```
+
 ## Hacking your own monads
 
 There is a special monads datatype defined in "monads/monads", it is constructed like so:

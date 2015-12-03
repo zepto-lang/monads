@@ -1,0 +1,12 @@
+(load "monads/monads")
+
+(define (monads:list val) "the constructor for a list monad"
+  (if (not (list? val))
+    (error "monads:list" "value must be list, was " val)
+    (monads:generic val :list (lambda (val) (monads:list val)) (lambda (f) (map f val)))))
+
+(define (monads:list? monad) "check whether monad is list monad"
+  (eq? (monads:get-type monad) :list))
+
+(define (monads:list-empty? monad) "check whether list monad is empty"
+  (null? (monads:get-val! monad)))
