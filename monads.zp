@@ -10,6 +10,8 @@
 (define (monads:print monad)
   (write (list (monads:get-type monad) (monads:get-val! monad))))
 
+(defimpl stringify monads:monad? ((->string monads:print)))
+
 (define-syntax monads:doM
   (syntax-rules ()
     ((monads:doM a) (error "doM takes at least two forms"))
